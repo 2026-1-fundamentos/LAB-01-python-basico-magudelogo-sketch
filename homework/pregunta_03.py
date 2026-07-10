@@ -15,40 +15,27 @@ def pregunta_03():
     [('A', 53), ('B', 36), ('C', 27), ('D', 31), ('E', 67)]
 
     """
-
-#RESPUESTA
-
 import csv
-import os
- 
- 
-def _ruta_datos():
-    return os.path.join(os.path.dirname(__file__), "..", "files", "data.csv")
- 
- 
-def _cargar_filas():
-    filas = []
-    with open(_ruta_datos(), newline="", encoding="utf-8") as f:
-        lector = csv.reader(f, delimiter="\t")
-        for fila in lector:
-            if fila:
-                filas.append(fila)
-    return filas
- 
- 
+
 def pregunta_03():
-    """
-    Retorne la suma de la columna 2 por cada letra de la primera columna como
-    una lista de tuplas (letra, suma) ordendas alfabeticamente.
- 
-    Rta/
-    [('A', 53), ('B', 36), ('C', 27), ('D', 31), ('E', 67)]
- 
-    """
-    filas = _cargar_filas()
-    sumas = {}
-    for fila in filas:
-        letra = fila[0]
-        valor = int(fila[1])
-        sumas[letra] = sumas.get(letra, 0) + valor
-    return sorted(sumas.items())
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Añade los valores de la columna 2 y los convierte en enteros
+            # Si existe
+            if fila[0] in dic:
+                dic[fila[0]] += int(fila[1])
+            # Si no existe
+            else:
+                dic[fila[0]] = int(fila[1])
+
+    # Se obtienen los objetos del dic, y se ordenan en base a su letra
+    lista = list(dic.items())
+    lista.sort()
+    
+    return lista
+
+print(pregunta_03())

@@ -26,51 +26,27 @@ def pregunta_07():
 
     """
 
-#RESPUESTA
-
-
 import csv
-import os
- 
- 
-def _ruta_datos():
-    return os.path.join(os.path.dirname(__file__), "..", "files", "data.csv")
- 
- 
-def _cargar_filas():
-    filas = []
-    with open(_ruta_datos(), newline="", encoding="utf-8") as f:
-        lector = csv.reader(f, delimiter="\t")
-        for fila in lector:
-            if fila:
-                filas.append(fila)
-    return filas
- 
- 
+
 def pregunta_07():
-    """
-    Retorne una lista de tuplas que asocien las columnas 0 y 1. Cada tupla
-    contiene un valor posible de la columna 2 y una lista con todas las letras
-    asociadas (columna 1) a dicho valor de la columna 2.
- 
-    Rta/
-    [(0, ['C']),
-     (1, ['E', 'B', 'E']),
-     (2, ['A', 'E']),
-     (3, ['A', 'B', 'D', 'E', 'E', 'D']),
-     (4, ['E', 'B']),
-     (5, ['B', 'C', 'D', 'D', 'E', 'E', 'E']),
-     (6, ['C', 'E', 'A', 'B']),
-     (7, ['A', 'C', 'E', 'D']),
-     (8, ['E', 'D', 'E', 'A', 'B']),
-     (9, ['A', 'B', 'E', 'A', 'A', 'C'])]
- 
-    """
-    filas = _cargar_filas()
-    asociacion = {}
-    for fila in filas:
-        letra = fila[0]
-        numero = int(fila[1])
-        asociacion.setdefault(numero, []).append(letra)
- 
-    return [(numero, asociacion[numero]) for numero in sorted(asociacion.keys())]
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Se toma una linea de la columna 5
+            num= int(fila[1])
+            
+            # Si no esta en el diccionario, se crea
+            if num not in dic:
+                dic[num] = [fila[0]]
+            # Se añaden letras al diccionario en caso de que ya exista su clave
+            else:
+                dic[num].append(fila[0])
+        
+
+    # Se ponen en formato de tupla  se ordena en base a su número(menor a mayor)
+    lista = [(clave, valor) for clave, valor in sorted(dic.items())]
+    
+    return lista

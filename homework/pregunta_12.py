@@ -15,49 +15,29 @@ def pregunta_12():
     {'A': 177, 'B': 187, 'C': 114, 'D': 136, 'E': 324}
 
     """
-#RESPUESTA
 
- 
 import csv
-import os
- 
- 
-def _ruta_datos():
-    return os.path.join(os.path.dirname(__file__), "..", "files", "data.csv")
- 
- 
-def _cargar_filas():
-    filas = []
-    with open(_ruta_datos(), newline="", encoding="utf-8") as f:
-        lector = csv.reader(f, delimiter="\t")
-        for fila in lector:
-            if fila:
-                filas.append(fila)
-    return filas
- 
- 
-def _parsear_diccionario(cadena):
-    diccionario = {}
-    for par in cadena.split(","):
-        clave, valor = par.split(":")
-        diccionario[clave] = int(valor)
-    return diccionario
- 
- 
 def pregunta_12():
-    """
-    Genere un diccionario que contengan como clave la columna 1 y como valor
-    la suma de los valores de la columna 5 sobre todo el archivo.
- 
-    Rta/
-    {'A': 177, 'B': 187, 'C': 114, 'D': 136, 'E': 324}
- 
-    """
-    filas = _cargar_filas()
-    sumas = {}
-    for fila in filas:
-        letra = fila[0]
-        diccionario = _parsear_diccionario(fila[4])
-        total = sum(diccionario.values())
-        sumas[letra] = sumas.get(letra, 0) + total
-    return dict(sorted(sumas.items()))
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Se toma la clave y los valores de cada fila
+            clave = fila[0]
+            # Se divide cada fragmento jjj:numero
+            aux = fila[4].split(',')
+            # Se toma solo el numero de cada fragmento
+            valores = [int(valor.split(':')[1]) for valor in aux]
+            # Se suman los valores
+            suma = sum(valores)
+
+            #
+            # Si no esta en el diccionario, se agrega
+            if clave not in dic:
+                dic[clave] = suma
+            else:
+                dic[clave] += suma
+
+    return dic
